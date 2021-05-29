@@ -1,11 +1,24 @@
-from flask import Flask
+from flask import Flask, request, jsonify
+from datetime import datetime
+from db import DB
+from domain.message import Message
 
 app = Flask(__name__)
 
 
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
+@app.route('/message', methods=['POST'])
+def send_message():
+    json = request.json
+    message = Message(
+        json["patientId"], json["text"], datetime.strptime(json["createdAt"], '%d/%m/%y %H:%M:%S'), json["origin"]
+    )
+    DB.insert_message(message)
+
+
+@app.route('/feed/<int:patient_id>', methods=['GET'])
+def get_feed(patient_id):
+    # Retrieve all the feed of a patient, including all messages and medias
+    return DB.get_patient_messages(patient_id)
 
 
 if __name__ == '__main__':
