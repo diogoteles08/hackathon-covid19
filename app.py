@@ -21,7 +21,7 @@ def get_feed(patient_id):
     # Retrieve all the feed of a patient, including all messages and medias
     return Response(
         status=200,
-        response=[msg.get_json() for msg in DB.get_patient_messages(patient_id)]
+        response=[msg.to_json() for msg in DB.get_patient_messages(patient_id)]
     )
 
 
