@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, Response
 from datetime import datetime
 from db import DB
 from domain.message import Message
@@ -13,12 +13,16 @@ def send_message():
         json["patientId"], json["text"], datetime.strptime(json["createdAt"], '%d/%m/%y %H:%M:%S'), json["origin"]
     )
     DB.insert_message(message)
+    return Response(status=204)
 
 
 @app.route('/feed/<int:patient_id>', methods=['GET'])
 def get_feed(patient_id):
     # Retrieve all the feed of a patient, including all messages and medias
-    return DB.get_patient_messages(patient_id)
+    return Response(
+        status=200,
+        response=[msg.get_json() for msg in DB.get_patient_messages(patient_id)]
+    )
 
 
 if __name__ == '__main__':
