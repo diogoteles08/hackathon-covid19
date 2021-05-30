@@ -20,4 +20,5 @@ class DB:
         patient_messages = []
         for index, row in patient_df.iterrows():
             patient_messages.append(Message(*(row.values.tolist())))
+        patient_messages.reverse()
         return patient_messages
