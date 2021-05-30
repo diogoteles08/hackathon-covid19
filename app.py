@@ -11,7 +11,11 @@ app = Flask(__name__)
 def send_message():
     json = request.json
     message = Message(
-        json["patientId"], json["text"], datetime.strptime(json["createdAt"], '%Y-%m-%dT%H:%M:%S.%fZ'), json["origin"]
+        json["patientId"],
+        json["text"],
+        datetime.strptime(json["createdAt"], '%Y-%m-%dT%H:%M:%S.%fZ'),
+        json["origin"],
+        json["author"]
     )
     DB.insert_message(message)
     return Response(status=204)
