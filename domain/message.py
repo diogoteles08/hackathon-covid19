@@ -15,7 +15,7 @@ class Message:
             {
                 "patientId": self.patient_id,
                 "text": self.text,
-                "createdAt": self.created_at.isoformat(),
+                "createdAt": self.created_at.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
                 "origin": self.origin,
                 "author": self.author,
             }
